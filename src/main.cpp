@@ -25,8 +25,8 @@ public:
 	}
 
 	BMP(int width_, int height_, int homeworkType_) : width(width_),
-												height(height_),
-												homeworkType(homeworkType_)
+							height(height_),
+							homeworkType(homeworkType_)
 	{
 		rgb = new RGB[width * height];
 		memset(rgb, 0, width * height * sizeof(RGB));
@@ -40,38 +40,38 @@ public:
 
 	virtual void generateBMP(  )
 	{
-		//------------- ´ò¿ªÎÄ¼þ --------------//
+		//------------- æ‰“å¼€æ–‡ä»¶ --------------//
 		std::ofstream outfile;
 		outfile.open( "./homework1.bmp", std::ios::out | std::ios::binary | std::ios::app );
 		if (!outfile.is_open()) {
-			std::cout << "´ò¿ªÎÄ¼þÊ§°Ü ..." << std::endl;
+			std::cout << "æ‰“å¼€æ–‡ä»¶å¤±è´¥ ..." << std::endl;
 			exit(-1);
 		}
-		std::cout << "´ò¿ªÎÄ¼þ" << std::endl;
-		//------------ Ð´ÈëÍ·ÐÅÏ¢ ------------//
+		std::cout << "æ‰“å¼€æ–‡ä»¶" << std::endl;
+		//------------ å†™å…¥å¤´ä¿¡æ¯ ------------//
 		this->generateHeader();
 		for (int i = 0; i < 14; i ++ )
 			outfile << header[i];
-		std::cout << "Ð´ÈëÍ·ÐÅÏ¢" << std::endl;
+		std::cout << "å†™å…¥å¤´ä¿¡æ¯" << std::endl;
 
-		//------------ Ð´ÈëÎ»Í¼ÐÅÏ¢ ----------//
+		//------------ å†™å…¥ä½å›¾ä¿¡æ¯ ----------//
 		this->generateBitMapInfo();
 		for (int i = 0; i < 40; i++)
 			outfile << bitMapInfo[i];
-		std::cout << "Ð´ÈëÎ»Í¼ÐÅÏ¢" << std::endl;
+		std::cout << "å†™å…¥ä½å›¾ä¿¡æ¯" << std::endl;
 
-		//----------- Ð´ÈëÍ¼ÏñÊý¾Ý -----------//
+		//----------- å†™å…¥å›¾åƒæ•°æ® -----------//
 		this->generateData(homeworkType);
 		unsigned char *data = new unsigned char[width * height * 3];
 		memcpy( data, rgb, width * height * 3);
 		for (int i = 0; i < width * height * 3; i++)
 			outfile << data[i];
 
-		std::cout << "Ð´ÈëÏñËØÐÅÏ¢" << std::endl;
+		std::cout << "å†™å…¥åƒç´ ä¿¡æ¯" << std::endl;
 		delete[] data;
 		// 
 		outfile.close();
-		std::cout << "¹Ø±ÕÎÄ¼þ" << std::endl;
+		std::cout << "å…³é—­æ–‡ä»¶" << std::endl;
 	}
 
 protected:
@@ -79,52 +79,52 @@ protected:
 	{
 		int size = width * height * 3;
 		header[0] = 0x42;
-		header[1] = 0x4d; // 2×Ö½ÚÎÄ¼þÀàÐÍ
+		header[1] = 0x4d; // 2å­—èŠ‚æ–‡ä»¶ç±»åž‹
 		unsigned long bfsize = size + 54;
-		memcpy( &header[2], &bfsize, sizeof( bfsize )); //4×Ö½ÚÎÄ¼þ´óÐ¡
+		memcpy( &header[2], &bfsize, sizeof( bfsize )); //4å­—èŠ‚æ–‡ä»¶å¤§å°
 		header[6] = 0;
 		header[7] = 0;
 		header[8] = 0;
-		header[9] = 0; // ±£ÁôÎ»
+		header[9] = 0; // ä¿ç•™ä½
 
 		unsigned long bfOffBit = bfsize - size;
-		memcpy( &header[10], &bfOffBit, sizeof( bfOffBit ) ); //4×Ö½Ú´ÓÍ·µ½Î»Í¼Êý¾ÝµÄÆ«ÒÆ×Ö½ÚÊý
+		memcpy( &header[10], &bfOffBit, sizeof( bfOffBit ) ); //4å­—èŠ‚ä»Žå¤´åˆ°ä½å›¾æ•°æ®çš„åç§»å­—èŠ‚æ•°
 	}
 
 	void generateBitMapInfo()
 	{
 		unsigned long biSize = 40;
-		memcpy(bitMapInfo, &biSize, sizeof( biSize )); // 4×Ö½ÚÐÅÏ¢Í·´óÐ¡£¬¼´40
+		memcpy(bitMapInfo, &biSize, sizeof( biSize )); // 4å­—èŠ‚ä¿¡æ¯å¤´å¤§å°ï¼Œå³40
 
 		long biWidth = width;
-		memcpy( &bitMapInfo[4], &biWidth, sizeof(biWidth) ); // 4×Ö½ÚÍ¼Ïñ¿í¶È
+		memcpy( &bitMapInfo[4], &biWidth, sizeof(biWidth) ); // 4å­—èŠ‚å›¾åƒå®½åº¦
 
 		long biHeight = height;
-		memcpy( &bitMapInfo[8], &biHeight, sizeof( biHeight ) ); // 4×Ö½ÚÍ¼Ïñ¸ß¶È
+		memcpy( &bitMapInfo[8], &biHeight, sizeof( biHeight ) ); // 4å­—èŠ‚å›¾åƒé«˜åº¦
 
 		unsigned short biPlanes = 1;
-		memcpy(&bitMapInfo[12], &biPlanes, sizeof(biPlanes)); //2×Ö½ÚÎ»Æ½ÃæÊý
+		memcpy(&bitMapInfo[12], &biPlanes, sizeof(biPlanes)); //2å­—èŠ‚ä½å¹³é¢æ•°
 
-		unsigned short biBitCount = 24; // 2×Ö½ÚÃ¿¸öÏñËØÎ»Êý
+		unsigned short biBitCount = 24; // 2å­—èŠ‚æ¯ä¸ªåƒç´ ä½æ•°
 		memcpy( &bitMapInfo[14], &biBitCount, sizeof( biBitCount ) );
 
 		unsigned long biCompression = 0;
-		memcpy( &bitMapInfo[16], &biCompression, sizeof(biCompression)); //4×Ö½ÚÑ¹ËõÀàÐÍ
+		memcpy( &bitMapInfo[16], &biCompression, sizeof(biCompression)); //4å­—èŠ‚åŽ‹ç¼©ç±»åž‹
 
 		unsigned long biSizeImages = 0;
-		memcpy(&bitMapInfo[20], &biSizeImages, sizeof(biSizeImages)); // 4×Ö½ÚÍ¼Ïñ´óÐ¡×Ö½ÚÊý
+		memcpy(&bitMapInfo[20], &biSizeImages, sizeof(biSizeImages)); // 4å­—èŠ‚å›¾åƒå¤§å°å­—èŠ‚æ•°
 
 		long biXPelsPerMeter = 0;
-		memcpy(&bitMapInfo[24], &biXPelsPerMeter, sizeof(biXPelsPerMeter) );// 4×Ö½ÚË®Æ½·Ö±æÂÊ
+		memcpy(&bitMapInfo[24], &biXPelsPerMeter, sizeof(biXPelsPerMeter) );// 4å­—èŠ‚æ°´å¹³åˆ†è¾¨çŽ‡
 
 		long biYPelsPerMeter = 0;
-		memcpy(&bitMapInfo[28], &biYPelsPerMeter, sizeof(biYPelsPerMeter));// 4×Ö½Ú´¹Ö±·Ö±æÂÊ
+		memcpy(&bitMapInfo[28], &biYPelsPerMeter, sizeof(biYPelsPerMeter));// 4å­—èŠ‚åž‚ç›´åˆ†è¾¨çŽ‡
 
 		unsigned long biClrUsed = 0;
-		memcpy(&bitMapInfo[32], &biClrUsed, sizeof(biClrUsed));// 4×Ö½ÚÎ»Í¼Êµ¼ÊÓÃµ½µÄÉ«²ÊÊý
+		memcpy(&bitMapInfo[32], &biClrUsed, sizeof(biClrUsed));// 4å­—èŠ‚ä½å›¾å®žé™…ç”¨åˆ°çš„è‰²å½©æ•°
 
 		unsigned long biClrImportant = 0;
-		memcpy(&bitMapInfo[36], &biClrImportant, sizeof(biClrImportant));// 4×Ö½Ú±¾ÎªÍ¼ÖÐÖØÒªµÄÉ«²ÊÊý
+		memcpy(&bitMapInfo[36], &biClrImportant, sizeof(biClrImportant));// 4å­—èŠ‚æœ¬ä¸ºå›¾ä¸­é‡è¦çš„è‰²å½©æ•°
 		
 	}
 
@@ -236,38 +236,38 @@ public:
 
 	virtual void generateBMP()
 	{
-		//------------- ´ò¿ªÎÄ¼þ --------------//
+		//------------- æ‰“å¼€æ–‡ä»¶ --------------//
 		std::ofstream outfile;
 		outfile.open("./hsitest.bmp", std::ios::out | std::ios::binary | std::ios::app);
 		if (!outfile.is_open()) {
-			std::cout << "´ò¿ªÎÄ¼þÊ§°Ü ..." << std::endl;
+			std::cout << "æ‰“å¼€æ–‡ä»¶å¤±è´¥ ..." << std::endl;
 			exit(-1);
 		}
-		std::cout << "´ò¿ªÎÄ¼þ" << std::endl;
-		//------------ Ð´ÈëÍ·ÐÅÏ¢ ------------//
+		std::cout << "æ‰“å¼€æ–‡ä»¶" << std::endl;
+		//------------ å†™å…¥å¤´ä¿¡æ¯ ------------//
 		this->generateHeader();
 		for (int i = 0; i < 14; i++)
 			outfile << header[i];
-		std::cout << "Ð´ÈëÍ·ÐÅÏ¢" << std::endl;
+		std::cout << "å†™å…¥å¤´ä¿¡æ¯" << std::endl;
 
-		//------------ Ð´ÈëÎ»Í¼ÐÅÏ¢ ----------//
+		//------------ å†™å…¥ä½å›¾ä¿¡æ¯ ----------//
 		this->generateBitMapInfo();
 		for (int i = 0; i < 40; i++)
 			outfile << bitMapInfo[i];
-		std::cout << "Ð´ÈëÎ»Í¼ÐÅÏ¢" << std::endl;
+		std::cout << "å†™å…¥ä½å›¾ä¿¡æ¯" << std::endl;
 
-		//----------- Ð´ÈëÍ¼ÏñÊý¾Ý -----------//
+		//----------- å†™å…¥å›¾åƒæ•°æ® -----------//
 		this->generateData(homeworkType);
 		unsigned char *data = new unsigned char[width * height * 3];
 		memcpy(data, hsi, width * height * 3);
 		for (int i = 0; i < width * height * 3; i++)
 			outfile << data[i];
 
-		std::cout << "Ð´ÈëÏñËØÐÅÏ¢" << std::endl;
+		std::cout << "å†™å…¥åƒç´ ä¿¡æ¯" << std::endl;
 		delete[] data;
 		// 
 		outfile.close();
-		std::cout << "¹Ø±ÕÎÄ¼þ" << std::endl;
+		std::cout << "å…³é—­æ–‡ä»¶" << std::endl;
 	}
 
 	void medianFilter()
