@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/riki/Test/imageProcess/homework1/src/main.cpp
+iostream
+-
+string.h
+-
+fstream
+-
+stdlib.h
+-
+math.h
+-
+cmath
+-
+
